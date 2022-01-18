@@ -1,20 +1,20 @@
 const TokenTypes = {
-  Keyword: "Keyword",
-  Identifier: "Identifier",
-  Punctuator: "Punctuator",
-  String: "String"
+  Keyword: "Keyword",        // 关键词
+  Identifier: "Identifier", // 标识符
+  Punctuator: "Punctuator", // 标点符号
+  String: "String",          // 字符串
 }
 
 const AST_Types = {
-  Literal: "Literal",
-  Identifier: "Identifier",
-  AssignmentExpression: "AssignmentExpression",
-  VariableDeclarator: "VariableDeclarator",
-  VariableDeclaration: "VariableDeclaration",
-  Program: "Program"
+  Literal: "Literal",                           // 文字
+  Identifier: "Identifier",                     // 标识符
+  AssignmentExpression: "AssignmentExpression", // 赋值表达式
+  VariableDeclarator: "VariableDeclarator",     // 变量声明器
+  VariableDeclaration: "VariableDeclaration",   // 变量声明
+  Program: "Program",                            // 程序
 }
 
 export {
   TokenTypes,
-  AST_Types
+  AST_Types,
 }
