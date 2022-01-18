@@ -22,7 +22,7 @@ function codeGenerator(node: any): any {
       return node.name
     
     case AST_Types.Literal: // 字符串加上""、;返回
-      return '"'+node.value+'"'+";"
+      return node.row + ";"
 
     // 如果我们不能识别这个结点，那么抛出一个错误。
     default:

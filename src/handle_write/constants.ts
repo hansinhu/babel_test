@@ -3,6 +3,8 @@ const TokenTypes = {
   Identifier: "Identifier", // 标识符
   Punctuator: "Punctuator", // 标点符号
   String: "String",          // 字符串
+  Numeric: "Numeric",       // 数字
+  Boolean: "Boolean",       // 布尔值
 }
 
 const AST_Types = {

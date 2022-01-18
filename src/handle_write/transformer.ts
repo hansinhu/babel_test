@@ -1,6 +1,5 @@
-const traverser = require("./traverser")
-const constants = require("./constants")
-const { AST_Types } = constants
+import { traverser } from './traverser'
+import { AST_Types } from './constants'
 
 // transformer接收 AST 作为参数
 function transformer(ast: any) {

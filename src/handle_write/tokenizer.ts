@@ -1,9 +1,10 @@
-const tokens = require("./constants")
-const KEYWORD = /let/ // 匹配关键字
-const PUNCTUATOR = /[\=;]/ // 匹配"="、";" 
+import { TokenTypes } from "./constants"
+const KEYWORD = /var|let|const/ // 匹配关键字, TODO: fucntion 关键字
+const NUMERIC = /^[0-9][0-9]{1}$/
+const BOOLEAN = /true|false/
+const PUNCTUATOR = /[\+\-\*\/\=;\(\)\{\}]/ // 匹配符号"="、";" 
 const WHITESPACE = /\s/ // 匹配空格
-const LETTERS = /[a-z]/i // 匹配字符
-const {TokenTypes } = tokens
+const LETTERS = /[0-9a-zA-Z_]/i // 匹配字符
 
 function tokenizer(input: string) {
   const tokens = [] // token列表存储token，并最终返回
@@ -23,20 +24,33 @@ function tokenizer(input: string) {
       }
       
       if(KEYWORD.test(value)) { // 判断当前字符串是否是关键字
-        // 记入关键字
+        // 关键字
         tokens.push({
            type: TokenTypes.Keyword,
            value: value
         })
-      } else { // 否则是变量名
-         // 记入变量名
-         tokens.push({
-           type: TokenTypes.Identifier,
-           value: value
-         })
-       }
-       // 进入下一次循环
-       continue
+      } else if (NUMERIC.test(value)) {
+        // 数字
+        tokens.push({
+          type: TokenTypes.Numeric,
+          value: value
+        })
+      } else if (BOOLEAN.test(value)) {
+        // 布尔值
+        tokens.push({
+          type: TokenTypes.Boolean,
+          value: value
+        })
+      } else {
+        // 否则是变量名
+        // 记入变量名
+        tokens.push({
+          type: TokenTypes.Identifier,
+          value: value
+        })
+      }
+      // 进入下一次循环
+      continue
     }
 
     // *************** 检查是否是符号，"="、";" ***************
@@ -77,4 +91,4 @@ function tokenizer(input: string) {
   return tokens
 }
 
-export default tokenizer
+export { tokenizer }

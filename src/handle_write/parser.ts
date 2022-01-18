@@ -1,5 +1,4 @@
-const tokens = require("./constants")
-const {TokenTypes, AST_Types } = tokens
+import { TokenTypes, AST_Types } from './constants'
 
 // 语法解析函数，接收 tokens 作为参数
 function parser(tokens: any[]) {
@@ -12,45 +11,7 @@ function parser(tokens: any[]) {
     // 从当前 token 开始解析
     const token = tokens[current]
 
-    // *************** 检查是不是字符串 ***************
-    if (token.type === TokenTypes.String) {
-      // 如果是 current 自增。
-      current++;
-      // 然后返回一个新的 AST 结点
-      return {
-        type: AST_Types.Literal,
-        value: JSON.parse(token.value),
-        row: token.value
-      }
-    }
-   
-    // *************** 检查是不是变量名 ***************
-    if (token.type === TokenTypes.Identifier) {
-      // 如果是，current 自增。
-      current++;
-      // 然后返回一个新的 AST 结点
-      return {
-        type: AST_Types.Identifier,
-        name: token.value,
-      };
-    }
-
-    // *************** 检查是不是运算符关键字 ***************
-    if (token.type === TokenTypes.Punctuator) {
-      // 如果是，current 自增。
-      current++;
-      // 判断是否是=号
-      if(/\=/.test(token.value)){
-        return {
-          type: AST_Types.AssignmentExpression,
-          operator: token.value
-        }
-      }else{ // 忽略掉;号，不算入AST中
-        return
-      }
-    }
-
-    // *************** 检查是不是关键字 ***************
+    // *************** 关键字 ***************
     if ( token.type === TokenTypes.Keyword) {
       var value = token.value
       current++; // 这里current++，因为紧跟声明语句的就是变量名，下一步walk就可以返回变量名
@@ -72,6 +33,41 @@ function parser(tokens: any[]) {
         kind: value,
       };
     }
+
+    // *************** 字符串/数字/布尔值 ***************
+    if ([TokenTypes.String, TokenTypes.Numeric, TokenTypes.Boolean].includes(token.type)) {
+      current++;
+      // 然后返回一个新的 AST 结点
+      return {
+        type: AST_Types.Literal,
+        value: JSON.parse(token.value),
+        row: token.value
+      }
+    }
+   
+    // *************** 变量名 ***************
+    if (token.type === TokenTypes.Identifier) {
+      current++;
+      // 然后返回一个新的 AST 结点
+      return {
+        type: AST_Types.Identifier,
+        name: token.value,
+      };
+    }
+
+    // *************** 运算符关键字 ***************
+    if (token.type === TokenTypes.Punctuator) {
+      current++;
+      // 判断是否是 = 号
+      if(/\=/.test(token.value)){
+        return {
+          type: AST_Types.AssignmentExpression,
+          operator: token.value
+        }
+      }else{ // 忽略掉;号，不算入AST中
+        return
+      }
+    }
     // *************** 遇到了一个类型未知的结点，就抛出一个错误。 ***************
     throw new TypeError(token.type);
   }
@@ -89,6 +85,4 @@ function parser(tokens: any[]) {
   return ast;
 }
 
-export {
-	parser
-}
+export { parser }
